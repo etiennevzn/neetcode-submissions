@@ -1,0 +1,60 @@
+class Solution {
+private:
+    string add(string& num1, string& num2){
+        int carry = 0;
+        int i = num1.size() - 1, j = num2.size() - 1;
+        string res = "";
+        while(i >= 0 || j >= 0){
+            int digit1 = i < 0 ? 0 : num1[i--] - '0';
+            int digit2 = j < 0 ? 0 : num2[j--] - '0';
+
+            int tmp = digit1 + digit2 + carry;
+            if(tmp >= 10){
+                carry = 1;
+                tmp -= 10;
+            }else{
+                carry = 0;
+            }
+
+            res.insert(res.begin(), tmp + '0');
+        }
+
+        if(carry) res.insert(res.begin(), carry + '0');
+        return res;
+    }
+public:
+    string multiply(string num1, string num2) {
+        if(num1 == "0" || num2 == "0") return "0";
+        int carry = 0;
+        if(num2.size() > num1.size()){
+            swap(num1, num2);
+        }
+        string res = "";
+
+        int i = num1.size() - 1, j = num2.size() - 1;
+        
+        for(int j = num2.size() - 1; j >= 0; --j){
+            string tmpRes = "";
+            int carry = 0;
+            for(int i = num1.size() - 1; i >= 0; --i){
+                int digit1 = num1[i] - '0';
+                int digit2 = num2[j] - '0';
+                int tmp = digit1 * digit2 + carry;
+                if(tmp >= 10){
+                    carry = tmp / 10;
+                    tmp %= 10;
+                }else{
+                    carry = 0;
+                }
+                tmpRes.insert(tmpRes.begin(), tmp + '0');
+            }
+            if(carry) tmpRes.insert(tmpRes.begin(), carry + '0');
+            for(int i = num2.size() - 1; i > j; --i){
+                tmpRes.push_back('0');
+            }
+            res = add(res, tmpRes);
+        }
+
+        return res;
+    }
+};
