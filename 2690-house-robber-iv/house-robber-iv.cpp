@@ -1,6 +1,6 @@
 class Solution {
 private:
-    int possible(int cap, int k, const vector<int>& nums){
+    bool possible(int cap, int k, const vector<int>& nums){
         for(int i = 0; i < nums.size(); ++i){
             if(nums[i] <= cap){
                 k--;
