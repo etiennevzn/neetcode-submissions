@@ -1,4 +1,16 @@
 class Solution {
+private:
+    int dfs(int employee, const unordered_map<int,vector<int>>& graph, const vector<int>& informTime){
+        if(!graph.count(employee)) return 0;
+
+        int inform = 0;
+        int added = informTime[employee];
+        for(size_t i = 0; i < graph.at(employee).size(); ++i){
+            inform = max(inform, added + dfs(graph.at(employee)[i], graph, informTime));
+        }
+
+        return inform;
+    }
 public:
     int numOfMinutes(int n, int headID, vector<int>& manager, vector<int>& informTime) {
         int numMin = 0;
@@ -9,21 +21,6 @@ public:
             graph[manager[i]].push_back(i);
         }
 
-        queue<pair<int,int>> q;
-        q.emplace(headID, 0);
-
-        while(!q.empty()){
-            auto [cur, time] = q.front();
-            q.pop();
-            numMin = max(numMin, time);
-            int infTime = informTime[cur];
-            
-            for(size_t i = 0; i < graph[cur].size(); ++i){
-                int nei = graph[cur][i];
-                q.emplace(nei, time + infTime);
-            }
-        }
-
-        return numMin;
+        return dfs(headID, graph, informTime);
     }
 };
