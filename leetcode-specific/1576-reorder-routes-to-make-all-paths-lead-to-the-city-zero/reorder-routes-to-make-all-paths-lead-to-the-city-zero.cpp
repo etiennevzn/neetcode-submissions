@@ -19,6 +19,6 @@ public:
             graph[connection[1]].push_back(-connection[0]);
         }
 
-        return dfs(0, INT_MIN, graph);
+        return dfs(0, 0, graph);
     }
 };
