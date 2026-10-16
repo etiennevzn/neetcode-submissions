@@ -1,8 +1,6 @@
 class Solution {
 private:
     int dfs(int cur, int parent, const vector<vector<int>>& graph){
-        if(graph[cur].empty()) return 0;
-
         int res = 0;
         for(int nei : graph[cur]){
             if(nei == parent || -nei == parent) continue;
