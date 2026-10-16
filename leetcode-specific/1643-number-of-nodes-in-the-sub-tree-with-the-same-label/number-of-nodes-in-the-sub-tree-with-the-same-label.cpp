@@ -1,23 +1,23 @@
 class Solution {
 private:
     vector<int> ans;
+    vector<int> countLabels;
 
-    vector<int> dfs(int cur, int parent, const string& labels, const vector<vector<int>>& graph){
-        vector<int> countLabels(26, 0);
+    void dfs(int cur, int parent, const string& labels, const vector<vector<int>>& graph){
+        int prevCount = countLabels[labels[cur] - 'a'];
         countLabels[labels[cur] - 'a']++;
 
         for(int nei : graph[cur]){
             if(nei == parent) continue;
-            vector<int> subLabels = dfs(nei, cur, labels, graph);
-            for(int i = 0; i < 26; ++i) countLabels[i] += subLabels[i];
+            dfs(nei, cur, labels, graph);
         }
 
-        ans[cur] = countLabels[labels[cur] - 'a'];
-        return countLabels;
+        ans[cur] = countLabels[labels[cur] - 'a'] - prevCount;
     }
 public:
     vector<int> countSubTrees(int n, vector<vector<int>>& edges, string labels) {
         ans.assign(n, 1);
+        countLabels.assign(26, 0);
 
         vector<vector<int>> graph(n);
         for(const vector<int>& edge : edges){
