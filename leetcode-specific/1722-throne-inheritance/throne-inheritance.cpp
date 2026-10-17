@@ -1,25 +1,23 @@
 class ThroneInheritance {
 private:
     unordered_map<string, vector<string>> child;
-    unordered_map<string, bool> alive;
+    unordered_set<string> dead;
     string king;
 public:
     ThroneInheritance(string kingName) {
         king = kingName;
-        alive[king] = true;
     }
     
     void birth(string parentName, string childName) {
-        alive[childName] = true;
         child[parentName].push_back(childName);
     }
     
     void death(string name) {
-        alive[name] = false;
+        dead.insert(name);
     }
 
     void getSuccessor(const string& name, vector<string>& order){
-        if(alive[name]) order.push_back(name);
+        if(!dead.count(name)) order.push_back(name);
         for(const string& children : child[name]){
             getSuccessor(children, order);
         }
