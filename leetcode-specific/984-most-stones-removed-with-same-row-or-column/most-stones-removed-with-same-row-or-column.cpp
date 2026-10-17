@@ -1,39 +1,33 @@
 class Solution {
 private:
-    int dfs(int cur, const vector<vector<int>>& graph, unordered_set<int>& visited){
-        if(visited.count(cur)) return 0;
+    int components;
+    unordered_map<int,int> parent;
 
-        visited.insert(cur);
-        int res = 1;
-        for(int nei : graph.at(cur)){
-            if(visited.count(nei)) continue;
-            res += dfs(nei, graph, visited);
+    int find(int coord){
+        if(!parent.count(coord)){
+            parent[coord] = coord;
+            components++;
         }
+        if(parent[coord] != coord) parent[coord] = find(parent[coord]);
+        return parent[coord];
+    }
 
-        return res;
+    void unite(int coordA, int coordB){
+        int pa = find(coordA), pb = find(coordB);
+        if(pa != pb){
+            parent[pb] = pa;
+            components--;
+        }
     }
 public:
     int removeStones(vector<vector<int>>& stones) {
         int n = stones.size();
-        vector<vector<int>> graph(n);
+        components = 0;
 
-        for(int i = 0; i < n; ++i){
-            int row = stones[i][0], col = stones[i][1];
-            for(int j = i +1; j < n; ++j){
-                if(stones[j][0] == row || stones[j][1] == col){
-                    graph[i].push_back(j);
-                    graph[j].push_back(i);
-                }
-            }
+        for(const vector<int>& stone : stones){
+            unite(stone[0], - stone[1] - 1);
         }
 
-        unordered_set<int> visited;
-        int res = 0;
-        for(int i = 0; i < n; ++i){
-            if(visited.count(i)) continue;
-            res += dfs(i, graph, visited) - 1;
-        }
-
-        return res;
+        return n - components;
     }
 };
