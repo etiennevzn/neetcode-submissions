@@ -29,7 +29,6 @@ public:
             distance++;
         }
 
-
         return -1;
     }
 };
