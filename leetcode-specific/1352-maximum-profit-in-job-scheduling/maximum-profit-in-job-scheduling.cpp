@@ -6,8 +6,9 @@ private:
         if(memo[i] != -1) return memo[i];
 
         int end = jobs[i][1];
-        int next = i + 1;
-        while(next < jobs.size() && jobs[next][0] < end) next++;
+        int next = lower_bound(jobs.begin() + i + 1, jobs.end(), end, [](const vector<int>& a, int b){
+            return a[0] < b;
+        }) - jobs.begin();
 
         return memo[i] = max(jobs[i][2] + dfs(next, jobs), dfs(i + 1, jobs));
     }
