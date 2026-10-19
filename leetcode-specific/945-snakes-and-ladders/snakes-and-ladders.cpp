@@ -24,8 +24,6 @@ public:
                 int cur = cells.front();
                 cells.pop();
 
-                if(cur == n*n) return diceRolls;
-
                 for(int next = cur + 1; next <= min(cur + 6, n*n); ++next){
                     int final = next;
                     auto [rnext, cnext] = getCoords(next, n);
@@ -33,6 +31,7 @@ public:
 
                     if(visited[final]) continue;
 
+                    if(final == n*n) return diceRolls + 1;
                     cells.push(final);
                     visited[final] = true;
                 }
