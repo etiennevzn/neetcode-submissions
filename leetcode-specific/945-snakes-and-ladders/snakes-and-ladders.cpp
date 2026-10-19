@@ -14,7 +14,7 @@ public:
         int n = board.size();
         int diceRolls = 0;
         queue<int> cells;
-        vector<int> visited(n*n + 1, false);
+        vector<bool> visited(n*n + 1, false);
 
         cells.push(1);
         visited[1] = true;
@@ -25,15 +25,15 @@ public:
                 cells.pop();
 
                 for(int next = cur + 1; next <= min(cur + 6, n*n); ++next){
-                    int final = next;
+                    int dest = next;
                     auto [rnext, cnext] = getCoords(next, n);
-                    if(board[rnext][cnext] != -1) final = board[rnext][cnext];
+                    if(board[rnext][cnext] != -1) dest = board[rnext][cnext];
 
-                    if(visited[final]) continue;
+                    if(visited[dest]) continue;
 
-                    if(final == n*n) return diceRolls + 1;
-                    cells.push(final);
-                    visited[final] = true;
+                    if(dest == n*n) return diceRolls + 1;
+                    cells.push(dest);
+                    visited[dest] = true;
                 }
             }
 
