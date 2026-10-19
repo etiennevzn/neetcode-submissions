@@ -1,13 +1,13 @@
 class Solution {
 private:
     pair<int,int> getCoords(int cell, int n){
-        int rnext = n - 1 - (cell - 1) / n;
-        int cnext = (cell - 1) % n;
-        if ((n - 1 - rnext) % 2 == 1){
-            cnext = n - 1 - cnext;
+        int r = n - 1 - (cell - 1) / n;
+        int c = (cell - 1) % n;
+        if ((n - 1 - r) % 2 == 1){
+            c = n - 1 - c;
         }
 
-        return {rnext, cnext};
+        return {r, c};
     }
 public:
     int snakesAndLadders(vector<vector<int>>& board) {
